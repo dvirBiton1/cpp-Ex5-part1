@@ -40,9 +40,10 @@ int main() {
   {
     cout << (*it) << " " ;
   } // prints: VP_SW VP_BI CTO CFO COO CEO
-  // for (auto it=organization.begin_preorder(); it!=organization.end_preorder(); ++it) {
-  //   cout << (*it) << " " ;
-  // }  // prints: CEO CTO VP_SW CFO COO VP_BI
+  cout << endl;
+  for (auto it=organization.begin_preorder(); it!=organization.end_preorder(); ++it) {
+    cout << (*it) << " " ;
+  }  // prints: CEO CTO VP_SW CFO COO VP_BI
 
   // for (int element: tree_of_ints) {  // this should work like level order
   //   cout << element << " " ;

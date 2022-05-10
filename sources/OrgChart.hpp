@@ -22,8 +22,10 @@ namespace ariel
         bool find_sub(Node &node, string father, string son);
         void fill_q_for_level_order(Node &node);
         void fill_q_for_reverse_order(Node &node);
+        void fill_q_for_preorder(Node &node);
         deque<string> q_level_order;
         deque<string> q_reverse_order;
+        deque<string> q_preorder;
 
     public:
         OrgChart();
@@ -35,8 +37,8 @@ namespace ariel
         deque<string>::iterator end_level_order();
         deque<string>::iterator begin_reverse_order();
         deque<string>::iterator reverse_order();
-        Iterator begin_preorder();
-        Iterator end_preorder();
+        deque<string>::iterator begin_preorder();
+        deque<string>::iterator end_preorder();
 
         ~OrgChart();
     };

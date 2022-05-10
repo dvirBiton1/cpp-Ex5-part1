@@ -81,7 +81,6 @@ namespace ariel
     deque<string>::iterator OrgChart::begin_reverse_order()
     {
         this->q_reverse_order.clear();
-        this->q_reverse_order.shrink_to_fit();
         this->q_reverse_order.push_front(this->root.name);
         fill_q_for_reverse_order(root);
         return q_reverse_order.begin();
@@ -89,6 +88,34 @@ namespace ariel
     deque<string>::iterator OrgChart::reverse_order()
     {
         return q_reverse_order.end();
+    }
+
+    void OrgChart::fill_q_for_preorder(Node &node)
+    {
+       q_preorder.push_back(node.name);
+       for (size_t i = 0; i < node.sones.size(); i++)
+       {
+           fill_q_for_preorder(node.sones.at(i));
+       }
+       
+    }
+    deque<string>::iterator OrgChart::begin_preorder()
+    {
+        this->q_preorder.clear();
+        fill_q_for_preorder(root);
+        return q_preorder.begin();
+    }
+    deque<string>::iterator OrgChart::end_preorder()
+    {
+        return q_preorder.end();
+    }
+    ostream &operator<<(ostream &out, OrgChart &root){
+        for (auto i = root.begin_preorder(); i != root.end_preorder(); i++)
+        {
+            out << (*i) << ", ";
+        }
+        return out;
+        
     }
 
 }
