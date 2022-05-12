@@ -17,10 +17,13 @@ namespace ariel
     }
     OrgChart &OrgChart::add_sub(string father, string son)
     {
-        find_sub(this->root, father, son);
+        if (find_sub(this->root, father, son) == 0)
+        {
+            throw invalid_argument("you dont have this father");
+        }
         return *this;
     }
-    bool OrgChart::find_sub(Node &node, string father, string son)
+    bool OrgChart::find_sub(Node &node, string &father, string &son)
     {
         int b = node.name.compare(father);
         if (!b)
@@ -43,11 +46,12 @@ namespace ariel
         return false;
     }
 
+    // **************** fill for the q ******************
     void OrgChart::fill_q_for_level_order(Node &node)
     {
         for (size_t i = 0; i < node.sones.size(); i++)
         {
-            this->q_level_order.push_back(node.sones.at(i).name);
+            this->b_level_order.push_back(node.sones.at(i).name);
         }
         for (size_t i = 0; i < node.sones.size(); i++)
         {
@@ -58,7 +62,7 @@ namespace ariel
     {
         for (int i = node.sones.size() - 1; i >= 0; i--)
         {
-            this->q_reverse_order.push_front(node.sones.at((size_t)i).name);
+            this->b_reverse_order.insert(this->b_reverse_order.begin(), node.sones.at((size_t)i).name);
         }
 
         for (int i = node.sones.size() - 1; i >= 0; i--)
@@ -67,55 +71,56 @@ namespace ariel
         }
     }
 
-    deque<string>::iterator OrgChart::begin_level_order()
-    {
-        this->q_level_order.clear();
-        this->q_level_order.push_front(this->root.name);
-        fill_q_for_level_order(root);
-        return q_level_order.begin();
-    }
-    deque<string>::iterator OrgChart::end_level_order()
-    {
-        return q_level_order.end();
-    }
-    deque<string>::iterator OrgChart::begin_reverse_order()
-    {
-        this->q_reverse_order.clear();
-        this->q_reverse_order.push_front(this->root.name);
-        fill_q_for_reverse_order(root);
-        return q_reverse_order.begin();
-    }
-    deque<string>::iterator OrgChart::reverse_order()
-    {
-        return q_reverse_order.end();
-    }
-
     void OrgChart::fill_q_for_preorder(Node &node)
     {
-       q_preorder.push_back(node.name);
-       for (size_t i = 0; i < node.sones.size(); i++)
-       {
-           fill_q_for_preorder(node.sones.at(i));
-       }
-       
+        b_preorder.push_back(node.name);
+        for (size_t i = 0; i < node.sones.size(); i++)
+        {
+            fill_q_for_preorder(node.sones.at(i));
+        }
     }
-    deque<string>::iterator OrgChart::begin_preorder()
+    // ******************* level order**************
+    string *OrgChart::begin_level_order()
     {
-        this->q_preorder.clear();
+        this->b_level_order.clear();
+        this->b_level_order.push_back(this->root.name);
+        fill_q_for_level_order(root);
+        return &this->b_level_order[0];
+    }
+    string *OrgChart::end_level_order()
+    {
+        return &this->b_level_order[this->b_level_order.size()];
+    }
+    // ******************* reverse order**************
+    string *OrgChart::begin_reverse_order()
+    {
+        this->b_reverse_order.clear();
+        this->b_reverse_order.insert(b_reverse_order.begin(), this->root.name);
+        fill_q_for_reverse_order(root);
+        return &b_reverse_order[0];
+    }
+    string *OrgChart::reverse_order()
+    {
+        return &this->b_reverse_order[b_reverse_order.size()];
+    }
+ // ******************* preorder order**************
+    string* OrgChart::begin_preorder()
+    {
+        this->b_preorder.clear();
         fill_q_for_preorder(root);
-        return q_preorder.begin();
+        return &this->b_preorder[0];
     }
-    deque<string>::iterator OrgChart::end_preorder()
+    string* OrgChart::end_preorder()
     {
-        return q_preorder.end();
+        return &this->b_preorder[b_preorder.size()];
     }
-    ostream &operator<<(ostream &out, OrgChart &root){
+    ostream &operator<<(ostream &out, OrgChart &root)
+    {
         for (auto i = root.begin_preorder(); i != root.end_preorder(); i++)
         {
             out << (*i) << ", ";
         }
         return out;
-        
     }
 
 }
