@@ -47,6 +47,7 @@ namespace ariel
     }
 
     // **************** fill for the q ******************
+    // level order
     void OrgChart::fill_q_for_level_order(Node &node)
     {
         for (size_t i = 0; i < node.sones.size(); i++)
@@ -58,6 +59,7 @@ namespace ariel
             fill_q_for_level_order(node.sones[i]);
         }
     }
+    // reverse order
     void OrgChart::fill_q_for_reverse_order(Node &node)
     {
         for (int i = node.sones.size() - 1; i >= 0; i--)
@@ -70,7 +72,7 @@ namespace ariel
             fill_q_for_reverse_order(node.sones[(size_t)i]);
         }
     }
-
+    // preorder
     void OrgChart::fill_q_for_preorder(Node &node)
     {
         b_preorder.push_back(node.name);
@@ -116,7 +118,7 @@ namespace ariel
     }
     ostream &operator<<(ostream &out, OrgChart &root)
     {
-        for (auto i = root.begin_preorder(); i != root.end_preorder(); i++)
+        for (auto i = root.begin_level_order(); i != root.end_level_order(); i++)
         {
             out << (*i) << ", ";
         }

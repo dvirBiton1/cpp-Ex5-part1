@@ -20,9 +20,11 @@ namespace ariel
         Node root;
         bool find_sub(Node &node, string &father, string &son);
         void fill_q_for_level_order(Node &node);
+        // void fill_q_for_print_level_order(Node &node);
         void fill_q_for_reverse_order(Node &node);
         void fill_q_for_preorder(Node &node);
         vector<string> b_level_order;
+        // vector<string> b_print_level_order;
         vector<string> b_reverse_order;
         vector<string> b_preorder;
 
@@ -34,6 +36,8 @@ namespace ariel
         friend ostream &operator<<(ostream &out,OrgChart &root);
         string* begin_level_order();
         string* end_level_order(); 
+        // string* begin_print_level_order();
+        // string* end_print_level_order(); 
         string* begin_reverse_order();
         string* reverse_order();
         string* begin_preorder();
