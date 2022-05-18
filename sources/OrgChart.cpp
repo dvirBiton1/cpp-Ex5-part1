@@ -1,3 +1,4 @@
+// I got help from dvir gev about the data structures
 #include "OrgChart.hpp"
 using namespace std;
 
@@ -50,26 +51,36 @@ namespace ariel
     // level order
     void OrgChart::fill_q_for_level_order(Node &node)
     {
-        for (size_t i = 0; i < node.sones.size(); i++)
+        vector<Node*> q;
+        q.push_back(&node);
+        for (size_t i = 0; i < q.size(); i++)
         {
-            this->b_level_order.push_back(node.sones.at(i).name);
-        }
-        for (size_t i = 0; i < node.sones.size(); i++)
-        {
-            fill_q_for_level_order(node.sones[i]);
+            Node* tmp = q[i];
+            b_level_order.push_back(tmp->name);
+            for (size_t j = 0; j < tmp->sones.size(); j++)
+            {
+                q.push_back(&(tmp->sones[j]));
+            }
         }
     }
     // reverse order
     void OrgChart::fill_q_for_reverse_order(Node &node)
     {
-        for (int i = node.sones.size() - 1; i >= 0; i--)
+        vector<Node*> q;
+        q.push_back(&node);
+        for (size_t i = 0; i < q.size(); i++)
         {
-            this->b_reverse_order.insert(this->b_reverse_order.begin(), node.sones.at((size_t)i).name);
+            Node* tmp = q[i];
+            b_level_order.push_back(tmp->name);
+            for (int j = tmp->sones.size()-1; j >= 0 ; j--)
+            {
+                q.push_back(&(tmp->sones[(size_t)j]));
+            }
         }
-
-        for (int i = node.sones.size() - 1; i >= 0; i--)
+        for (int i = q.size()-1; i >= 0; i--)
         {
-            fill_q_for_reverse_order(node.sones[(size_t)i]);
+            string n = q[(size_t)i]->name;
+            b_reverse_order.push_back(n);
         }
     }
     // preorder
@@ -85,7 +96,7 @@ namespace ariel
     string *OrgChart::begin_level_order()
     {
         this->b_level_order.clear();
-        this->b_level_order.push_back(this->root.name);
+        // this->b_level_order.push_back(this->root.name);
         fill_q_for_level_order(root);
         return &this->b_level_order[0];
     }
@@ -97,7 +108,6 @@ namespace ariel
     string *OrgChart::begin_reverse_order()
     {
         this->b_reverse_order.clear();
-        this->b_reverse_order.insert(b_reverse_order.begin(), this->root.name);
         fill_q_for_reverse_order(root);
         return &b_reverse_order[0];
     }
